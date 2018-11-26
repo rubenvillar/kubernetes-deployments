@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: transmsission-bt-deployment
+  labels:
+    app: transmission-bt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: transmission-bt
+  template:
+    metadata:
+      labels:
+        app: transmission-bt
+    spec:
+      containers:
+      - name: transmission-bt
+        image: linuxserver/transmission:152
+        ports:
+        - containerPort: 9091
+          protocol: TCP
+        - containerPort: 51413
+          protocol: TCP
+        - containerPort: 51413
+          protocol: UDP
+        volumeMounts:
+        - mountPath: /downloads
+          name: downloads-volume
+        - mountPath: /config
+          name: transmission-config
+      volumes:
+      - name: downloads-volume
+        hostPath:
+          path: /mnt/NAS/downloads
+          type: Directory
+      - name: transmission-config
+        hostPath:
+          path: /mnt/NAS/kubernetes/transmission-config
+          type: Directory
