@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: transmission-bt-service
+  labels:
+    app: transmission-bt
+spec:
+  selector:
+    app: transmission-bt
+  type: NodePort
+  ports:
+  - protocol: TCP 
+    port: 9091
