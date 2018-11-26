@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: amule-deployment
+  labels:
+    app: amule
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: amule
+  template:
+    metadata:
+      labels:
+        app: amule
+    spec:
+      containers:
+      - name: amule
+        image: tchabaud/amule
+        ports:
+        - containerPort: 4711
+          protocol: TCP
+        - containerPort: 4712
+          protocol: TCP
+        - containerPort: 4662
+          protocol: TCP
+        - containerPort: 4672
+          protocol: UDP
+        volumeMounts:
+        - mountPath: /incoming
+          name: downloads-volume
+        - mountPath: /temp
+          name: downloads-temp
+        - mountPath: /home/amule/.aMule
+          name: amule-config
+        env:
+        - name: GUI_PWD
+          value: "admin"
+        - name: WEBUI_PWD
+          value: "admin"
+      volumes:
+      - name: downloads-volume
+        hostPath:
+          path: /data/downloads
+          type: Directory
+      - name: downloads-temp
+        hostPath:
+          path: /data/temp
+          type: Directory
+      - name: amule-config
+        hostPath:
+          path: /data/amule-config
+          type: Directory
