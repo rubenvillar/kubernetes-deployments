@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: transmission-bt
-        image: linuxserver/transmission:152
+        image: lsioarmhf/transmission
         ports:
         - containerPort: 9091
           protocol: TCP
